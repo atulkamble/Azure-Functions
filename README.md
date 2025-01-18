@@ -152,3 +152,138 @@ git push -u origin main
 ---
 
 This is a basic setup for Azure Functions. Let me know if you'd like to explore advanced topics like bindings, deployment pipelines, or integrating with other Azure services!
+Here’s how you can run the Azure Functions project locally:
+
+---
+
+### **Prerequisites**
+
+1. **Install Required Tools**:
+   - [Visual Studio Code](https://code.visualstudio.com/)
+   - [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#install-the-azure-functions-core-tools)
+   - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+   - Language-specific runtime:
+     - Node.js (for JavaScript)
+     - Python (for Python)
+     - .NET SDK (for C#)
+
+2. **Install Extensions**:
+   - In Visual Studio Code, install the **Azure Functions** extension.
+
+3. **Verify Installation**:
+   Run these commands in your terminal to check installations:
+   ```bash
+   func --version   # Azure Functions Core Tools
+   az --version     # Azure CLI
+   ```
+
+---
+
+### **Steps to Run Locally**
+
+#### **1. Open the Project in VS Code**
+- Open your Azure Functions project folder in **Visual Studio Code**.
+
+---
+
+#### **2. Install Dependencies**
+- Navigate to your project folder in the terminal.
+- Install the dependencies:
+  - **JavaScript**:  
+    ```bash
+    npm install
+    ```
+  - **Python**:  
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+---
+
+#### **3. Configure Local Settings**
+- Ensure `local.settings.json` has the correct configuration:
+  - **Node.js (JavaScript)**:
+    ```json
+    {
+      "IsEncrypted": false,
+      "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "node"
+      }
+    }
+    ```
+  - **Python**:
+    ```json
+    {
+      "IsEncrypted": false,
+      "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "python"
+      }
+    }
+    ```
+  - **C#**:
+    ```json
+    {
+      "IsEncrypted": false,
+      "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+      }
+    }
+    ```
+
+---
+
+#### **4. Start the Azure Function**
+Run the following command in the terminal:
+```bash
+func start
+```
+
+This will start the Azure Functions host and display the local URL for your HTTP Trigger function, such as:
+```
+http://localhost:7071/api/ProcessDataFunction
+```
+
+---
+
+#### **5. Test the Function**
+Use a tool like **Postman**, **cURL**, or your browser to test the function.
+
+- **Postman** (for HTTP POST):
+  - Set the method to `POST`.
+  - URL: `http://localhost:7071/api/ProcessDataFunction`
+  - Body (JSON):
+    ```json
+    {
+      "name": "Atul",
+      "age": 30
+    }
+    ```
+
+- **cURL**:
+  ```bash
+  curl -X POST http://localhost:7071/api/ProcessDataFunction \
+       -H "Content-Type: application/json" \
+       -d '{"name": "Atul", "age": 30}'
+  ```
+
+---
+
+#### **6. Deploy to Azure (Optional)**
+After verifying it works locally, you can deploy it to Azure using **Visual Studio Code** or the Azure CLI:
+- **From VS Code**:
+  - Click the **Azure icon** in the Activity Bar.
+  - Right-click your Function App and select **Deploy to Function App**.
+
+- **Using Azure CLI**:
+  ```bash
+  func azure functionapp publish <Your-Function-App-Name>
+  ```
+
+Replace `<Your-Function-App-Name>` with the name of your Azure Function App.
+
+---
+
+Let me know if you encounter any issues during setup or testing!
